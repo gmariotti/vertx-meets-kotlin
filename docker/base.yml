@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=vertx
+      - POSTGRES_PASSWORD=password
+
+  vertx-twitter:
+    build: ./vertx-twitter
+    container_name: vertx-twitter
+    depends_on:
+      - postgres
+    image: vertx-twitter
+    ports:
+      - "8080:8080"
+    env_file:
+      - twitter.env
+
+  vertx-reactive:
+    build: ./vertx-reactive
+    container_name: vertx-reactive
+    depends_on:
+      - postgres
+    image: vertx-reactive
+    ports:
+      - "8081:8080"
